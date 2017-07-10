@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="ashley_dawson_simple_pagination.paginator.class">AshleyDawson\SimplePagination\Paginator</parameter>
+        <parameter key="ashley_dawson_simple_pagination.twig_extension.class">AshleyDawson\SimplePaginationBundle\Twig\SimplePaginationExtension</parameter>
+    </parameters>
+
+    <services>
+        <service id="ashley_dawson_simple_pagination.paginator" class="%ashley_dawson_simple_pagination.paginator.class%">
+            <call method="setItemsPerPage">
+                <argument>%ashley_dawson_simple_pagination.defaults.items_per_page%</argument>
+            </call>
+            <call method="setPagesInRange">
+                <argument>%ashley_dawson_simple_pagination.defaults.pages_in_range%</argument>
+            </call>
+        </service>
+        <service id="ashley_dawson_simple_pagination.twig_extension" class="%ashley_dawson_simple_pagination.twig_extension.class%">
+            <argument>%ashley_dawson_simple_pagination.defaults.template%</argument>
+            <tag name="twig.extension" />
+        </service>
+    </services>
+
+</container>

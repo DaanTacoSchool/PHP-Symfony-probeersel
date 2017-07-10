@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="site-wrapper">
+    <div id="site-wrapper-inner-resultpage">
+
+{% block body_menu %}
+{{parent()}}
+{% endblock %}
+{% block body_text_content %}
+{{ form_start(form) }}
+  {{ form_errors(form) }}
+
+    <div>
+        {{ form_label(form.searchObject, 'Search ', {'label_attr': {'class': 'searchLabel'}}) }}
+        {{ form_errors(form.searchObject) }}
+        {{ form_widget(form.searchObject, {'attr': {'class': 'searchBar'}}) }}
+    </div>
+
+    <div>
+        {{ form_widget(form.save, {'attr': {'class': 'searchButton'}}) }}
+    </div>
+{{ form_end(form) }}
+{% endblock %}
+{% block body_results %}
+ {% for movie in movies %}
+       
+        <div class="movieDiv-container">
+             <div class="movieDiv-image">
+            <img src="{{movie.PosterPath()}}" alt="#">
+            </div>
+            <div class="movieDiv-right-wrapper">
+                <div class="movieDiv-header">
+                    <h3>{{ movie.Title() }}</h3>
+                </div>
+           
+                <div class="movieDiv-info">
+                    <p>{{ movie.Overview()}}</p>
+                </div>
+            </div>
+       </div>
+    {% endfor %}
+{% endblock %}
+        </div>
+    </div>
+{% endblock %}

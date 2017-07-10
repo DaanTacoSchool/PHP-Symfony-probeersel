@@ -2,9 +2,7 @@
 
 {% block body_text_title %}Search for your movie here!{% endblock %}
 {% block body_text_content %}
- {% for movie in movies %}
-       {{ movie.title }}
-    {% endfor %}
+
 
 {% endblock %}
 {% block body_content_other %}
@@ -18,11 +16,10 @@
         {{ form_widget(form.searchObject, {'attr': {'class': 'searchBar'}}) }}
     </div>
 
-  
-
     <div>
         {{ form_widget(form.save, {'attr': {'class': 'searchButton'}}) }}
     </div>
 {{ form_end(form) }}
 {% endblock %}
+
 

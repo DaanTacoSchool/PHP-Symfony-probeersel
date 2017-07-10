@@ -17,6 +17,7 @@
       <parameter key="DoctrineBundle">Doctrine\Bundle\DoctrineBundle\DoctrineBundle</parameter>
       <parameter key="SensioFrameworkExtraBundle">Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle</parameter>
       <parameter key="AppBundle">AppBundle\AppBundle</parameter>
+      <parameter key="AshleyDawsonSimplePaginationBundle">AshleyDawson\SimplePaginationBundle\AshleyDawsonSimplePaginationBundle</parameter>
       <parameter key="DebugBundle">Symfony\Bundle\DebugBundle\DebugBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
@@ -63,6 +64,11 @@
         <parameter key="parent">null</parameter>
         <parameter key="path">C:\php\netvlies_opdracht\src\AppBundle</parameter>
         <parameter key="namespace">AppBundle</parameter>
+      </parameter>
+      <parameter key="AshleyDawsonSimplePaginationBundle" type="collection">
+        <parameter key="parent">null</parameter>
+        <parameter key="path">C:\php\netvlies_opdracht\vendor\ashleydawson\simple-pagination-bundle\AshleyDawson\SimplePaginationBundle</parameter>
+        <parameter key="namespace">AshleyDawson\SimplePaginationBundle</parameter>
       </parameter>
       <parameter key="DebugBundle" type="collection">
         <parameter key="parent">null</parameter>
@@ -333,6 +339,11 @@
     <parameter key="sensio_framework_extra.converter.doctrine.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter</parameter>
     <parameter key="sensio_framework_extra.converter.datetime.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DateTimeParamConverter</parameter>
     <parameter key="sensio_framework_extra.view.listener.class">Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener</parameter>
+    <parameter key="ashley_dawson_simple_pagination.defaults.items_per_page">10</parameter>
+    <parameter key="ashley_dawson_simple_pagination.defaults.pages_in_range">5</parameter>
+    <parameter key="ashley_dawson_simple_pagination.defaults.template">AshleyDawsonSimplePaginationBundle:Pagination:default.html.twig</parameter>
+    <parameter key="ashley_dawson_simple_pagination.paginator.class">AshleyDawson\SimplePagination\Paginator</parameter>
+    <parameter key="ashley_dawson_simple_pagination.twig_extension.class">AshleyDawson\SimplePaginationBundle\Twig\SimplePaginationExtension</parameter>
     <parameter key="web_profiler.debug_toolbar.position">bottom</parameter>
     <parameter key="web_profiler.debug_toolbar.intercept_redirects">false</parameter>
     <parameter key="web_profiler.debug_toolbar.mode">2</parameter>
@@ -608,7 +619,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>fUkXzWqetoJUyiwJktT1am</argument>
+      <argument>j60owPBbT+OV5OFYd9eGzY</argument>
       <argument>C:\php\netvlies_opdracht\var\cache\dev/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -618,7 +629,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>fUkXzWqetoJUyiwJktT1am</argument>
+      <argument>j60owPBbT+OV5OFYd9eGzY</argument>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
@@ -1375,6 +1386,14 @@
       </call>
       <call method="addListener">
         <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service" id="debug.debug_handlers_listener"/>
+          <argument>configure</argument>
+        </argument>
+        <argument>2048</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.command</argument>
         <argument type="collection">
           <argument type="service" id="debug.debug_handlers_listener"/>
           <argument>configure</argument>
@@ -2160,12 +2179,12 @@
     </service>
     <service id="security.authentication.listener.anonymous.main" class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
       <argument type="service" id="security.token_storage"/>
-      <argument>596367e23a0330.00288324</argument>
+      <argument>596399d3147071.02264787</argument>
       <argument type="service" id="monolog.logger.security" on-invalid="null"/>
       <argument type="service" id="security.authentication.manager"/>
     </service>
     <service id="security.authentication.provider.anonymous.main" class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-      <argument>596367e23a0330.00288324</argument>
+      <argument>596399d3147071.02264787</argument>
     </service>
     <service id="security.exception_listener.main" class="Symfony\Component\Security\Http\Firewall\ExceptionListener" public="false">
       <argument type="service" id="security.token_storage"/>
@@ -2273,6 +2292,9 @@
         <argument type="service" id="doctrine.twig.doctrine_extension"/>
       </call>
       <call method="addExtension">
+        <argument type="service" id="ashley_dawson_simple_pagination.twig_extension"/>
+      </call>
+      <call method="addExtension">
         <argument type="service" id="twig.extension.dump"/>
       </call>
       <call method="addExtension">
@@ -2341,6 +2363,10 @@
       <call method="addPath">
         <argument>C:\php\netvlies_opdracht\vendor\doctrine\doctrine-bundle/Resources/views</argument>
         <argument>Doctrine</argument>
+      </call>
+      <call method="addPath">
+        <argument>C:\php\netvlies_opdracht\vendor\ashleydawson\simple-pagination-bundle\AshleyDawson\SimplePaginationBundle/Resources/views</argument>
+        <argument>AshleyDawsonSimplePagination</argument>
       </call>
       <call method="addPath">
         <argument>C:\php\netvlies_opdracht\vendor\symfony\symfony\src\Symfony\Bundle\DebugBundle/Resources/views</argument>
@@ -2483,6 +2509,10 @@
       <call method="addPath">
         <argument>C:\php\netvlies_opdracht\vendor\doctrine\doctrine-bundle/Resources/views</argument>
         <argument>Doctrine</argument>
+      </call>
+      <call method="addPath">
+        <argument>C:\php\netvlies_opdracht\vendor\ashleydawson\simple-pagination-bundle\AshleyDawson\SimplePaginationBundle/Resources/views</argument>
+        <argument>AshleyDawsonSimplePagination</argument>
       </call>
       <call method="addPath">
         <argument>C:\php\netvlies_opdracht\vendor\symfony\symfony\src\Symfony\Bundle\DebugBundle/Resources/views</argument>
@@ -2966,6 +2996,18 @@
       <argument type="service" id="security.authorization_checker" on-invalid="null"/>
     </service>
     <service id="sensio_framework_extra.security.expression_language.default" class="Sensio\Bundle\FrameworkExtraBundle\Security\ExpressionLanguage" public="false"/>
+    <service id="ashley_dawson_simple_pagination.paginator" class="AshleyDawson\SimplePagination\Paginator">
+      <call method="setItemsPerPage">
+        <argument>10</argument>
+      </call>
+      <call method="setPagesInRange">
+        <argument>5</argument>
+      </call>
+    </service>
+    <service id="ashley_dawson_simple_pagination.twig_extension" class="AshleyDawson\SimplePaginationBundle\Twig\SimplePaginationExtension">
+      <tag name="twig.extension"/>
+      <argument>AshleyDawsonSimplePaginationBundle:Pagination:default.html.twig</argument>
+    </service>
     <service id="twig.extension.dump" class="Symfony\Bridge\Twig\Extension\DumpExtension" public="false">
       <tag name="twig.extension"/>
       <argument type="service" id="var_dumper.cloner"/>
@@ -3371,7 +3413,7 @@
     <service id="cache.system.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false" lazy="true">
       <argument>hfvVyb1RUV</argument>
       <argument>0</argument>
-      <argument>fUkXzWqetoJUyiwJktT1am</argument>
+      <argument>j60owPBbT+OV5OFYd9eGzY</argument>
       <argument>C:\php\netvlies_opdracht\var\cache\dev/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -3379,7 +3421,7 @@
     <service id="cache.validator.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false" lazy="true">
       <argument>DnH6Zuune9</argument>
       <argument>0</argument>
-      <argument>fUkXzWqetoJUyiwJktT1am</argument>
+      <argument>j60owPBbT+OV5OFYd9eGzY</argument>
       <argument>C:\php\netvlies_opdracht\var\cache\dev/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -3387,7 +3429,7 @@
     <service id="cache.serializer.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false" lazy="true">
       <argument>6tF54aouy6</argument>
       <argument>0</argument>
-      <argument>fUkXzWqetoJUyiwJktT1am</argument>
+      <argument>j60owPBbT+OV5OFYd9eGzY</argument>
       <argument>C:\php\netvlies_opdracht\var\cache\dev/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -3395,7 +3437,7 @@
     <service id="cache.annotations.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false" lazy="true">
       <argument>ngW0Gj0uJC</argument>
       <argument>0</argument>
-      <argument>fUkXzWqetoJUyiwJktT1am</argument>
+      <argument>j60owPBbT+OV5OFYd9eGzY</argument>
       <argument>C:\php\netvlies_opdracht\var\cache\dev/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>

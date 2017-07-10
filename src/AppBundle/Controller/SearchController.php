@@ -14,6 +14,7 @@ use Unirest;
 
 class SearchController extends Controller
 {
+    
     /**
      * @Route("/search/searchpage", name="searchpage")
      */
@@ -35,18 +36,20 @@ class SearchController extends Controller
     if ($form->isSubmitted() && $form->isValid()) {
         // $form->getData() holds the submitted values
         // but, the original `$searchObject` variable has also been updated
-        $searchObject = $form->getData();
-
-       
+        $searchObject = $form->getData();      
+        $configResponse = Unirest\Request::get('https://api.themoviedb.org/3/configuration?api_key=75c283e81f306f2883b55e5ecb213cd8');
+        $imageBaseUrl = $configResponse->body->images->base_url;
+        $posterSize = $configResponse->body->images->poster_sizes[2];
+        $imagePrefix = $imageBaseUrl.$posterSize;
         $headers = array('Accept' => 'application/json');
        
-      //  $apiKey = '--';
+     
         $filterLanguage ='en-US';//default
         $searchQuery= $searchObject->getSearchObject();
         $resultPage=1;
         $isAdultFilm=false;
         $query = array('language' => $filterLanguage, 'query' => urlencode($searchQuery), 'page' => $resultPage, 'include_adult'=> $isAdultFilm);
-        $response = Unirest\Request::get('https://api.themoviedb.org/3/search/movie?api_key=placekeyhere',$headers,$query);
+        $response = Unirest\Request::get('https://api.themoviedb.org/3/search/movie?api_key=75c283e81f306f2883b55e5ecb213cd8',$headers,$query);
        
 
    
@@ -58,7 +61,8 @@ class SearchController extends Controller
          $movie->setVoteAverage($value->vote_average);
          $movie->setTitle($value->title);
          $movie->setPopularity($value->popularity);
-         $movie->setPosterPath($value->poster_path);
+         $imgPath = $imagePrefix.$value->poster_path;
+         $movie->setPosterPath($imgPath);
          $movie->setOriginalLanguage($value->original_language);
          $movie->setOriginalTitle($value->original_title);
          $movie->setGenreIds($value->genre_ids);
@@ -69,20 +73,23 @@ class SearchController extends Controller
         $arrayobj[] =$movie;
         }   
    
-
-         return $this->render('search/searchpage.html.twig', array(
-            'form' => $form->createView(),'movies'=>$arrayobj,
-            
+        /*  return $this->render('search/searchpage.html.twig', array(
+            'form' => $form->createView(),'movies'=>$arrayobj,         
+        ));*/
+         return $this->render('search/searchresults.html.twig', array(
+            'form' => $form->createView(),'movies'=>$arrayobj,         
         ));
     }
     
         return $this->render('search/searchpage.html.twig', array(
-            'form' => $form->createView(),'movies'=>$arrayobj
+            'form' => $form->createView()
         ));
         // searchpage
       //  return $this->render('search/searchpage.html.twig');
     }
 
+    
+    
  
 }
 ?>
