@@ -2,7 +2,10 @@
 
 {% block body_text_title %}Search for your movie here!{% endblock %}
 {% block body_text_content %}
- {{searchObject}}
+ {% for movie in movies %}
+       {{ movie.title }}
+    {% endfor %}
+
 {% endblock %}
 {% block body_content_other %}
 
