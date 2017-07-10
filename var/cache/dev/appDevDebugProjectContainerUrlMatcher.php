@@ -127,9 +127,17 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             return array (  '_controller' => 'AppBundle\\Controller\\LuckyController::numberAction',  '_route' => 'lucky_number',);
         }
 
-        // searchpage
-        if ('/search/searchpage' === $pathinfo) {
-            return array (  '_controller' => 'AppBundle\\Controller\\SearchController::indexAction',  '_route' => 'searchpage',);
+        if (0 === strpos($pathinfo, '/search/searchpage')) {
+            // searchpage
+            if ('/search/searchpage' === $pathinfo) {
+                return array (  '_controller' => 'AppBundle\\Controller\\SearchController::indexAction',  '_route' => 'searchpage',);
+            }
+
+            // tmp
+            if (preg_match('#^/search/searchpage/(?P<pagenum>\\d+)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'tmp')), array (  '_controller' => 'AppBundle\\Controller\\SearchController::showPage',));
+            }
+
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

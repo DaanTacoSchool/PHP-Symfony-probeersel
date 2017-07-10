@@ -235,3 +235,9 @@ body {
         overflow: hidden;
     padding: 1%;
 }
+.movieDiv-right-inner-wrapper{
+    overflow: hidden;
+}
+.movieDiv-right-details{
+    overflow: hidden;
+}

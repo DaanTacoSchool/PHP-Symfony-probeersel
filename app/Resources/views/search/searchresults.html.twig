@@ -6,22 +6,8 @@
 {% block body_menu %}
 {{parent()}}
 {% endblock %}
-{% block body_text_content %}
-{{ form_start(form) }}
-  {{ form_errors(form) }}
-
-    <div>
-        {{ form_label(form.searchObject, 'Search ', {'label_attr': {'class': 'searchLabel'}}) }}
-        {{ form_errors(form.searchObject) }}
-        {{ form_widget(form.searchObject, {'attr': {'class': 'searchBar'}}) }}
-    </div>
-
-    <div>
-        {{ form_widget(form.save, {'attr': {'class': 'searchButton'}}) }}
-    </div>
-{{ form_end(form) }}
-{% endblock %}
 {% block body_results %}
+
  {% for movie in movies %}
        
         <div class="movieDiv-container">
@@ -36,9 +22,18 @@
                 <div class="movieDiv-info">
                     <p>{{ movie.Overview()}}</p>
                 </div>
+                <div class="movieDiv-right-details">
+                <table>
+                    <tr><th>Release date</th><td>{{movie.ReleaseDate()}}</td></tr>
+                    <tr><th>Adult rated</th><td>{{movie.IsAdult()}}</td></tr>
+                    <tr><th>Popularity</th><td>{{movie.Popularity()}}</td></tr>
+                </table>     
+                </div>
             </div>
        </div>
+       
     {% endfor %}
+   
 {% endblock %}
         </div>
     </div>
