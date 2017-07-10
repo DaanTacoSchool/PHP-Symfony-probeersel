@@ -212,27 +212,25 @@ body {
 .movieDiv-header{
     height: 10%;
     background-color: #379cf1;
-   // vertical-align: top;
     border-color: #f00;
     border: 1px solid;
 }
 
 .movieDiv-image{
-        float: left;
+    float: left;
     margin-left: 2%;
     padding-bottom: 1%;
     padding-top: 1%;
   
 }
 .movieDiv-info{
-   // float: right;
     background-color: #a9a9a9;
     border-color: #f00;
-     border: 1px solid;
-     position: inherit;
+    border: 1px solid;
+    position: inherit;
 }
 .movieDiv-right-wrapper{
-        overflow: hidden;
+    overflow: hidden;
     padding: 1%;
 }
 .movieDiv-right-inner-wrapper{
@@ -240,4 +238,16 @@ body {
 }
 .movieDiv-right-details{
     overflow: hidden;
+}
+.paginationDiv{
+    font-size: 40px;
+    background-color: #494955;
+    padding-bottom: 2%;
+}
+
+.activeLink:active,
+.activeLink{
+    color: white;
+    font-size: 48px;
+    font-weight: bold;
 }

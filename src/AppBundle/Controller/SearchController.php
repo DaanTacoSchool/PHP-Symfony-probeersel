@@ -63,10 +63,10 @@ class SearchController extends Controller
         $resp = new Response();
         $cookieItems = new Cookie('totalitems', $totalItems, time()+3600);
         $cookieSearchQuery = new Cookie('search', urlencode($searchQuery), time()+3600);
-        $cookieIncludeAdult = new Cookie('isadult', $isAdultFilm, time()+3600);    
+        $cookiePage = new Cookie('currentpage', $resultPage, time()+3600);    
         $resp->headers->setCookie($cookieItems);
         $resp->headers->setCookie($cookieSearchQuery);
-        $resp->headers->setCookie($cookieIncludeAdult);
+        $resp->headers->setCookie($cookiePage);
         $resp->send();
    
      foreach ($response->body->results as &$value) {
@@ -101,7 +101,7 @@ class SearchController extends Controller
          
          return $this->render('search/searchresults.html.twig', array(
             'form' => $form->createView(),'movies'=>$arrayobj, 'totalItems'=>$totalItems,'totalPages'=>$totalPages,
-            'divided'=>$divided,'pagination' => $pagination));
+            'divided'=>$divided,'pagination' => $pagination,'currentpage'=>$resultPage));
     }
         return $this->render('search/searchpage.html.twig', array(
             'form' => $form->createView()
@@ -128,10 +128,10 @@ class SearchController extends Controller
         $resp = new Response();
         $cookieItems = new Cookie('totalitems', $totalItems, time()+3600);
         $cookieSearchQuery = new Cookie('search', urlencode($searchQuery), time()+3600);
-        $cookieIncludeAdult = new Cookie('isadult', $isAdultFilm, time()+3600);    
+        $cookiePage = new Cookie('currentpage', $page, time()+3600);  
         $resp->headers->setCookie($cookieItems);
         $resp->headers->setCookie($cookieSearchQuery);
-        $resp->headers->setCookie($cookieIncludeAdult);
+        $resp->headers->setCookie($cookiePage);
         $resp->send();
        
      foreach ($response->body->results as &$value) {
@@ -172,9 +172,9 @@ class SearchController extends Controller
         $paginator->setSliceCallback(function ($offset, $length) use ($arrayob) {
             return array_slice($arrayob, $offset, $length);
         });
-        $pagination = $paginator->paginate((int)$request->query->get('page', $pagenum));
+        $pagination = $paginator->paginate((int)$request->query->get('pagenum', $pagenum));
          return $this->render('search/searchresults.html.twig', array(
-            'movies'=>$arrayob,'pagination' => $pagination
+            'movies'=>$arrayob,'pagination' => $pagination,'currentpage'=>$pagenum
         ));
      }
  

@@ -33,12 +33,13 @@
        </div>
        
     {% endfor %}
-   <div>
+   <div class="paginationDiv">
     {% for page in pagination.pages %}
-        <a href="../../search/searchpage/{{page}}">{{ page }}</a> |
+        <a href="/search/searchpage/{{page}}" id="activeLink" class="{% if currentpage == page %}activeLink{% endif %}">{{ page }}</a> |
     {% endfor %}
 </div>
 {% endblock %}
         </div>
     </div>
+
 {% endblock %}
