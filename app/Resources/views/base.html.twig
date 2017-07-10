@@ -27,7 +27,7 @@
                 <ul class="nav masthead-nav">
                   <li class="{% if app.request.attributes.get('_route') starts with 'homepage' %}active{% endif %}"><a href="../../">Home</a></li>
                   <li class="{% if app.request.attributes.get('_route') starts with 'lucky' %}active{% endif %}"><a href="../../lucky/number">Lucky number</a></li>
-                  <li><a href="#">Contact</a></li>
+                  <li class="{% if app.request.attributes.get('_route') starts with 'search' %}active{% endif %}"><a href="../../search/searchpage">Search</a></li>
                 </ul>
               </nav>
             </div>
@@ -38,6 +38,7 @@
           <div class="inner cover">
             <h1 class="cover-heading">{% block body_text_title %}{% endblock %}</h1>
             <p class="lead">{% block body_text_content %}{% endblock %}</p>
+              {% block body_content_other %}{% endblock %}
           </div>
 {% endblock %}{# end of body_content block #}
 {% block body_footer %}

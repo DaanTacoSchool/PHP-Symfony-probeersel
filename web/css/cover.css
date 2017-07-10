@@ -169,3 +169,27 @@ body {
     width: 700px;
   }
 }
+
+.searchBar{
+    color: rgba(0,0,0,.5);
+    font-size: 15px;
+    font-weight: bold;
+    padding: 8px;
+    width: 29%;
+    border: none;
+}
+
+.searchLabel{
+    font-size: 17px;
+    padding: 2px;
+    width: 10%;
+    margin-right: 3px;
+}
+
+.searchButton{
+    background-color: #494955;
+    border: none;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    width: 40%;
+}
