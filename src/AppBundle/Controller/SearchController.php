@@ -61,10 +61,10 @@ class SearchController extends Controller
         $divided=ceil($totalItems/20);
 
         $resp = new Response();
-        $cookiePage = new Cookie('page', $resultPage, time()+3600);
+        $cookieItems = new Cookie('totalitems', $totalItems, time()+3600);
         $cookieSearchQuery = new Cookie('search', urlencode($searchQuery), time()+3600);
         $cookieIncludeAdult = new Cookie('isadult', $isAdultFilm, time()+3600);    
-        $resp->headers->setCookie($cookiePage);
+        $resp->headers->setCookie($cookieItems);
         $resp->headers->setCookie($cookieSearchQuery);
         $resp->headers->setCookie($cookieIncludeAdult);
         $resp->send();
@@ -89,10 +89,19 @@ class SearchController extends Controller
          $arrayobj[] =$movie;
         }   
    
+          $paginator = $this->get('ashley_dawson_simple_pagination.paginator');
+          $paginator->setItemTotalCallback(function () use ($totalItems) {
+            return $totalItems;
+        });
+        $paginator->setSliceCallback(function ($offset, $length) use ($arrayobj) {
+            return array_slice($arrayobj, $offset, $length);
+        });
+        $pagination = $paginator->paginate((int)$request->query->get('page', $resultPage));
+
          
          return $this->render('search/searchresults.html.twig', array(
             'form' => $form->createView(),'movies'=>$arrayobj, 'totalItems'=>$totalItems,'totalPages'=>$totalPages,
-            'divided'=>$divided));
+            'divided'=>$divided,'pagination' => $pagination));
     }
         return $this->render('search/searchpage.html.twig', array(
             'form' => $form->createView()
@@ -115,11 +124,12 @@ class SearchController extends Controller
         $isAdultFilm=$isAdult;
         $query = array('language' => $filterLanguage, 'query' => urlencode($searchQuery), 'page' => $resultPage, 'include_adult'=> $isAdultFilm);
         $response = Unirest\Request::get('https://api.themoviedb.org/3/search/movie?api_key=75c283e81f306f2883b55e5ecb213cd8',$headers,$query);
+        $totalItems= $response->body->total_results;
         $resp = new Response();
-        $cookiePage = new Cookie('page', $resultPage, time()+3600);
+        $cookieItems = new Cookie('totalitems', $totalItems, time()+3600);
         $cookieSearchQuery = new Cookie('search', urlencode($searchQuery), time()+3600);
         $cookieIncludeAdult = new Cookie('isadult', $isAdultFilm, time()+3600);    
-        $resp->headers->setCookie($cookiePage);
+        $resp->headers->setCookie($cookieItems);
         $resp->headers->setCookie($cookieSearchQuery);
         $resp->headers->setCookie($cookieIncludeAdult);
         $resp->send();
@@ -152,9 +162,19 @@ class SearchController extends Controller
      */
      public function showPage(Request $request,$pagenum){
        $search = $request->cookies->get('search');
+       $totalItems = $request->cookies->get('totalitems');
        $arrayob=$this->requestMovies($pagenum,$search,false);
+
+        $paginator = $this->get('ashley_dawson_simple_pagination.paginator');
+          $paginator->setItemTotalCallback(function () use ($totalItems) {
+            return $totalItems;
+        });
+        $paginator->setSliceCallback(function ($offset, $length) use ($arrayob) {
+            return array_slice($arrayob, $offset, $length);
+        });
+        $pagination = $paginator->paginate((int)$request->query->get('page', $pagenum));
          return $this->render('search/searchresults.html.twig', array(
-            'movies'=>$arrayob,
+            'movies'=>$arrayob,'pagination' => $pagination
         ));
      }
  
