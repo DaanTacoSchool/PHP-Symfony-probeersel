@@ -225,7 +225,7 @@ body {
 }
 .movieDiv-info{
     background-color: #a9a9a9;
-    border-color: #f00;
+    padding: 1%;
     border: 1px solid;
     position: inherit;
 }
@@ -238,6 +238,7 @@ body {
 }
 .movieDiv-right-details{
     overflow: hidden;
+    background-color: rgba(89, 98, 163, 0.23);
 }
 .paginationDiv{
     font-size: 40px;
@@ -250,4 +251,22 @@ body {
     color: white;
     font-size: 48px;
     font-weight: bold;
+}
+.smallDetailsTable{
+    margin: 1%;
+}
+.smallDetailsTable >tbody >tr >th{
+   padding-right: 65px;
+ // column-span: 2;
+}
+.smallDetailsTable >tbody >tr >td{
+    text-align: left;
+    padding-right: 10px;
+}
+.tableGenre{
+    margin: 1%;
+}
+.cellGenre{
+    text-align: left;
+    padding-right: 10px;
 }

@@ -122,12 +122,12 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             return array (  '_controller' => 'AppBundle\\Controller\\DefaultController::indexAction',  '_route' => 'homepage',);
         }
 
-        // lucky_number
-        if ('/lucky/number' === $pathinfo) {
-            return array (  '_controller' => 'AppBundle\\Controller\\LuckyController::numberAction',  '_route' => 'lucky_number',);
-        }
-
         if (0 === strpos($pathinfo, '/search/searchpage')) {
+            // details
+            if (0 === strpos($pathinfo, '/search/searchpage/details') && preg_match('#^/search/searchpage/details/(?P<id>\\d+)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'details')), array (  '_controller' => 'AppBundle\\Controller\\DetailController::indexAction',));
+            }
+
             // searchpage
             if ('/search/searchpage' === $pathinfo) {
                 return array (  '_controller' => 'AppBundle\\Controller\\SearchController::indexAction',  '_route' => 'searchpage',);
@@ -138,6 +138,11 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'tmp')), array (  '_controller' => 'AppBundle\\Controller\\SearchController::showPage',));
             }
 
+        }
+
+        // lucky_number
+        if ('/lucky/number' === $pathinfo) {
+            return array (  '_controller' => 'AppBundle\\Controller\\LuckyController::numberAction',  '_route' => 'lucky_number',);
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

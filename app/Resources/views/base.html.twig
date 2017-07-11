@@ -25,9 +25,9 @@
               <h3 class="masthead-brand">Movie assignment</h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li class="{% if app.request.attributes.get('_route') starts with 'homepage' %}active{% endif %}"><a href="../../">Home</a></li>
-                  <li class="{% if app.request.attributes.get('_route') starts with 'lucky' %}active{% endif %}"><a href="../../lucky/number">Lucky number</a></li>
-                  <li class="{% if app.request.attributes.get('_route') starts with 'search' %}active{% endif %}"><a href="../../search/searchpage">Search</a></li>
+                  <li class="{% if app.request.attributes.get('_route') starts with 'homepage' %}active{% endif %}"><a href="/">Home</a></li>
+                  <li class="{% if app.request.attributes.get('_route') starts with 'lucky' %}active{% endif %}"><a href="/lucky/number">Lucky number</a></li>
+                  <li class="{% if app.request.attributes.get('_route') starts with 'search' %}active{% endif %}"><a href="/search/searchpage">Search</a></li>
                 </ul>
               </nav>
             </div>

@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="site-wrapper">
+    <div id="site-wrapper-inner-resultpage">
+{% block body_menu %}
+    {{parent()}}
+{% endblock %}
+{% block body_results %}      
+        <div class="movieDiv-container">
+             <div class="movieDiv-image">
+                 {% if not (movie.poster_path ends with '.jpg') %}
+                 <p>No image found!</p>
+                 {% else %}
+            <img src="{{imgpath}}{{movie.poster_path}}" alt="#">
+                 {% endif %}
+            </div>
+            <div class="movieDiv-right-wrapper">
+                <div class="movieDiv-header">
+                    <h3>{{ movie.title }}</h3>
+                </div>       
+                <div class="movieDiv-info">
+                    <p>{{ movie.overview}}</p>
+                </div>
+                <div class="movieDiv-right-details">
+                <table class="smallDetailsTable">
+                    <tr>
+                        <th>Release date</th>
+                            <td>{{movie.release_date}}</td>
+                            <td></td>
+                        <th>Budget</th>
+                            <td>{{movie.budget |number_format(2, '.', ',')}}</td>
+                    </tr>
+                    <tr>
+                        <th>Average score</th>
+                            <td>{{movie.vote_average}}</td>
+                            <td></td>
+                        <th>Revenue</th>
+                            <td>{{movie.revenue |number_format(2, '.', ',')}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total votes</th>
+                            <td>{{movie.vote_count}}</td>
+                            <td></td>
+                        <th>Duration</th>
+                            <td>{{movie.runtime}}min</td>
+                    </tr>
+                    <tr>
+                        <th>Popularity rating</th>
+                            <td>{{movie.popularity}}</td>
+                            <td></td>      
+                    </tr>
+                     </table>  
+                    <table class="tableGenre">
+                    <tr>
+                        <th class="cellGenre">Genres</th>
+                        {% for genre in movie.genres %}
+                            <td class="cellGenre">{{genre.name}}</td>
+                        {% endfor %}
+                    </tr>
+                    
+                </table>     
+                </div>
+            </div>
+       </div>
+      
+{% endblock %}{# body_results #}
+    </div>
+</div>
+
+{% endblock %}{# body #}

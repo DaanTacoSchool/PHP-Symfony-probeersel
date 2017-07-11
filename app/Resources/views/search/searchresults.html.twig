@@ -2,44 +2,52 @@
 {% block body %}
 <div class="site-wrapper">
     <div id="site-wrapper-inner-resultpage">
-
 {% block body_menu %}
-{{parent()}}
+    {{parent()}}
 {% endblock %}
 {% block body_results %}
-
- {% for movie in movies %}
+    {% for movie in movies %}
        
         <div class="movieDiv-container">
              <div class="movieDiv-image">
+                 {% if not (movie.PosterPath() ends with '.jpg') %}
+                 <p>No image found!</p>
+                 {% else %}
             <img src="{{movie.PosterPath()}}" alt="#">
+                 {% endif %}
             </div>
             <div class="movieDiv-right-wrapper">
                 <div class="movieDiv-header">
                     <h3>{{ movie.Title() }}</h3>
-                </div>
-           
+                </div>       
                 <div class="movieDiv-info">
                     <p>{{ movie.Overview()}}</p>
                 </div>
                 <div class="movieDiv-right-details">
-                <table>
-                    <tr><th>Release date</th><td>{{movie.ReleaseDate()}}</td></tr>
-                    <tr><th>Adult rated</th><td>{{movie.IsAdult()}}</td></tr>
-                    <tr><th>Popularity</th><td>{{movie.Popularity()}}</td></tr>
+                <table class="smallDetailsTable">
+                    <tr><th>Release date</th><td>{{movie.ReleaseDate()}}</td><td></td></tr>
+                    <tr><th>Average score</th><td>{{movie.VoteAverage()}}</td><td></td></tr>
+                    <tr><th>Total votes</th><td>{{movie.VoteCount()}}</td><td></td></tr>
+                    <tr><th>Popularity rating</th><td>{{movie.Popularity()}}</td><td><a href="../../search/searchpage/details/{{movie.MovieId()}}">Details</a></td></tr>
+                    
                 </table>     
                 </div>
             </div>
        </div>
        
     {% endfor %}
+       <p>{{totalitems}} Movies found!</p> 
+        
    <div class="paginationDiv">
-    {% for page in pagination.pages %}
-        <a href="/search/searchpage/{{page}}" id="activeLink" class="{% if currentpage == page %}activeLink{% endif %}">{{ page }}</a> |
-    {% endfor %}
-</div>
-{% endblock %}
-        </div>
+       {% for page in pagination.pages %}
+       {% if page <= totalpages %}
+           <a href="/search/searchpage/{{page}}"  class="{% if currentpage == page %}activeLink{% endif %}">{{ page }}</a> |
+       {% endif %}
+       {% endfor %}
+       of <a href="/search/searchpage/{{totalpages}}" class="lastPageLink">{{ totalpages }}</a>   
     </div>
+{% endblock %}{# body_results #}
+    </div>
+</div>
 
-{% endblock %}
+{% endblock %}{# body #}

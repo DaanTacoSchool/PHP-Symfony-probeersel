@@ -43,7 +43,15 @@ class SearchController extends Controller
               $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        $searchObject = $form->getData();      
+        $searchObject = $form->getData();     
+        /* doesnt work as intended, something with the cookies, maybe if i can pass those values through other means this will work.
+        $search= $searchObject->getSearchObject();
+        $resultPage=1;//needed somewhere else as well.
+        $arrayobj=$this->requestMovies($resultPage,$search,false);
+        $search = $request->cookies->get('search');
+        $totalItems = $request->cookies->get('totalitems');
+        $totalPages = $request->cookies->get('totalpages');
+        */
         $configResponse = Unirest\Request::get('https://api.themoviedb.org/3/configuration?api_key=75c283e81f306f2883b55e5ecb213cd8');
         $imageBaseUrl = $configResponse->body->images->base_url;
         $posterSize = $configResponse->body->images->poster_sizes[2];
@@ -64,9 +72,11 @@ class SearchController extends Controller
         $cookieItems = new Cookie('totalitems', $totalItems, time()+3600);
         $cookieSearchQuery = new Cookie('search', urlencode($searchQuery), time()+3600);
         $cookiePage = new Cookie('currentpage', $resultPage, time()+3600);    
+        $cookieTotalPages = new Cookie('totalpages', $totalPages, time()+3600); 
         $resp->headers->setCookie($cookieItems);
         $resp->headers->setCookie($cookieSearchQuery);
         $resp->headers->setCookie($cookiePage);
+        $resp->headers->setCookie($cookieTotalPages);
         $resp->send();
    
      foreach ($response->body->results as &$value) {
@@ -100,8 +110,8 @@ class SearchController extends Controller
 
          
          return $this->render('search/searchresults.html.twig', array(
-            'form' => $form->createView(),'movies'=>$arrayobj, 'totalItems'=>$totalItems,'totalPages'=>$totalPages,
-            'divided'=>$divided,'pagination' => $pagination,'currentpage'=>$resultPage));
+            'form' => $form->createView(),'movies'=>$arrayobj, 'totalitems'=>$totalItems,'totalpages'=>$totalPages,
+            'pagination' => $pagination,'currentpage'=>$resultPage));
     }
         return $this->render('search/searchpage.html.twig', array(
             'form' => $form->createView()
@@ -125,13 +135,16 @@ class SearchController extends Controller
         $query = array('language' => $filterLanguage, 'query' => urlencode($searchQuery), 'page' => $resultPage, 'include_adult'=> $isAdultFilm);
         $response = Unirest\Request::get('https://api.themoviedb.org/3/search/movie?api_key=75c283e81f306f2883b55e5ecb213cd8',$headers,$query);
         $totalItems= $response->body->total_results;
+        $totalPages=$response->body->total_pages;
         $resp = new Response();
         $cookieItems = new Cookie('totalitems', $totalItems, time()+3600);
         $cookieSearchQuery = new Cookie('search', urlencode($searchQuery), time()+3600);
         $cookiePage = new Cookie('currentpage', $page, time()+3600);  
+        $cookieTotalPages = new Cookie('totalpages', $totalPages, time()+3600);  
         $resp->headers->setCookie($cookieItems);
         $resp->headers->setCookie($cookieSearchQuery);
         $resp->headers->setCookie($cookiePage);
+        $resp->headers->setCookie($cookieTotalPages);
         $resp->send();
        
      foreach ($response->body->results as &$value) {
@@ -163,6 +176,7 @@ class SearchController extends Controller
      public function showPage(Request $request,$pagenum){
        $search = $request->cookies->get('search');
        $totalItems = $request->cookies->get('totalitems');
+       $totalPages = $request->cookies->get('totalpages');
        $arrayob=$this->requestMovies($pagenum,$search,false);
 
         $paginator = $this->get('ashley_dawson_simple_pagination.paginator');
@@ -174,7 +188,7 @@ class SearchController extends Controller
         });
         $pagination = $paginator->paginate((int)$request->query->get('pagenum', $pagenum));
          return $this->render('search/searchresults.html.twig', array(
-            'movies'=>$arrayob,'pagination' => $pagination,'currentpage'=>$pagenum
+            'movies'=>$arrayob,'pagination' => $pagination,'currentpage'=>$pagenum, 'totalpages'=>$totalPages, 'totalitems'=>$totalItems
         ));
      }
  
