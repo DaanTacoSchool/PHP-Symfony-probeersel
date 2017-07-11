@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<div class="site-wrapper">
-    <div id="site-wrapper-inner-resultpage">
+<div class="site-wrapper" style="background-image:url({{backdroppath}}{{movie.backdrop_path}}); background-size: cover;">
+    <div id="site-wrapper-inner-resultpage" >
 {% block body_menu %}
     {{parent()}}
 {% endblock %}

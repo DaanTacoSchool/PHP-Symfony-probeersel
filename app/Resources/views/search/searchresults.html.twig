@@ -1,11 +1,20 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<div class="site-wrapper">
-    <div id="site-wrapper-inner-resultpage">
+<div class="site-wrapper bgMovieResults"style="background-image:url('{{background}}'); 
+    ">
+    <div id="site-wrapper-inner-resultpage" >
 {% block body_menu %}
     {{parent()}}
 {% endblock %}
 {% block body_results %}
+        <div class="paginationDiv-top">
+       {% for page in pagination.pages %}
+       {% if page <= totalpages %}
+           <a href="/search/searchpage/{{page}}"  class="{% if currentpage == page %}activeLink{% endif %}">{{ page }}</a> |
+       {% endif %}
+       {% endfor %}
+       of <a href="/search/searchpage/{{totalpages}}" class="lastPageLink">{{ totalpages }}</a>   
+    </div>
     {% for movie in movies %}
        
         <div class="movieDiv-container">
@@ -37,6 +46,7 @@
        
     {% endfor %}
        <p>{{totalitems}} Movies found!</p> 
+   
         
    <div class="paginationDiv">
        {% for page in pagination.pages %}

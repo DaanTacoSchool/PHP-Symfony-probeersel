@@ -14,15 +14,16 @@
     </head>
     <body>
         {% block body %}
+        
 		<div class="site-wrapper">
 
       <div class="site-wrapper-inner">
-
+          
         
 {% block body_menu %}
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">Movie assignment</h3>
+              <h3 class="masthead-brand"><a href="/" class="noDecoration">Movie assignment</a></h3>
               <nav>
                 <ul class="nav masthead-nav">
                   <li class="{% if app.request.attributes.get('_route') starts with 'homepage' %}active{% endif %}"><a href="/">Home</a></li>
@@ -50,11 +51,12 @@
             </div>
           </div>
 {% endblock %}{# end of body_footer block #}
-        </div>
-
+        </div>{# cover container , contains body content and body footer, directly below body#}
+         
       </div>
 
     </div>
+       
 
 {% endblock %}{# end of body block #}
         {% block javascripts %}

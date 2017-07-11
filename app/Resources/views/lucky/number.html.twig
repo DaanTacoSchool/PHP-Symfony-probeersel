@@ -1,6 +1,25 @@
 {% extends 'base.html.twig' %}
-
-{% block body_text_title %}{{number}}{% endblock %}
-{% block body_text_content %}This is your lucky number{% endblock %}
-
+{% block body %}
+<div class="site-wrapper bgMovieResults"style="background-image:url(https://source.unsplash.com/random/800x600); ">
+    <div id="site-wrapper-inner-resultpage" >
+        <video preload="auto" autoplay="" loop="" class="fillWidth fadeIn animated" poster="https://s3.amazonaws.com/coverr-public/poster/Clouds_Lapse.jpg" style="width: 1519px;">
+            <source src="https://coverr.co//s3/mp4/Clouds_Lapse.mp4" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
+            <source src="https://coverr.co//s3/mp4/Clouds_Lapse.mp4" type="video/webm">Your browser does not support the video tag. I suggest you upgrade your browser.
+        </video>
+{% block body_menu %}
+    {{parent()}}
+{% endblock %}
+        <div class="cover-container">
+      {% block body_content %}
+          <div class="inner cover">
+            <h1 class="cover-heading">{% block body_text_title %}{{number}}{% endblock %}</h1>
+            <p class="lead">{% block body_text_content %}Your lucky number!{% endblock %}</p>
+              {% block body_content_other %}This is really just a temporary placeholder for the music api!{% endblock %}
+          </div>
+ 
+{% endblock %}
+            </div>
+        
+</div></div>
+{% endblock %}
 

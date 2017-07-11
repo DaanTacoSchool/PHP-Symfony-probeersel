@@ -12,6 +12,7 @@ use AppBundle\Entity\MovieObject;
 use Unirest;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Helpers\BackgroundHelper;
 
 class SearchController extends Controller
 {
@@ -55,7 +56,14 @@ class SearchController extends Controller
         $configResponse = Unirest\Request::get('https://api.themoviedb.org/3/configuration?api_key=75c283e81f306f2883b55e5ecb213cd8');
         $imageBaseUrl = $configResponse->body->images->base_url;
         $posterSize = $configResponse->body->images->poster_sizes[2];
+        $backdropSize=$configResponse->body->images->backdrop_sizes[2];
         $imagePrefix = $imageBaseUrl.$posterSize;
+        $backdropPrefix=$imageBaseUrl.$backdropSize;
+
+        $bgHelper = new BackgroundHelper();
+        $backdropPath=$bgHelper->getBackground();
+        $pageBackground=$backdropPrefix.$backdropPath;
+
         $headers = array('Accept' => 'application/json');
      
         $filterLanguage ='en-US';//default
@@ -70,13 +78,16 @@ class SearchController extends Controller
 
         $resp = new Response();
         $cookieItems = new Cookie('totalitems', $totalItems, time()+3600);
-        $cookieSearchQuery = new Cookie('search', urlencode($searchQuery), time()+3600);
+        $cookieSearchQuery = new Cookie('search', $searchQuery, time()+3600);
         $cookiePage = new Cookie('currentpage', $resultPage, time()+3600);    
         $cookieTotalPages = new Cookie('totalpages', $totalPages, time()+3600); 
+        $cookieBackground = new Cookie('background',$pageBackground,time()+3600);
+        
         $resp->headers->setCookie($cookieItems);
         $resp->headers->setCookie($cookieSearchQuery);
         $resp->headers->setCookie($cookiePage);
         $resp->headers->setCookie($cookieTotalPages);
+        $resp->headers->setCookie($cookieBackground);
         $resp->send();
    
      foreach ($response->body->results as &$value) {
@@ -111,7 +122,7 @@ class SearchController extends Controller
          
          return $this->render('search/searchresults.html.twig', array(
             'form' => $form->createView(),'movies'=>$arrayobj, 'totalitems'=>$totalItems,'totalpages'=>$totalPages,
-            'pagination' => $pagination,'currentpage'=>$resultPage));
+            'pagination' => $pagination,'currentpage'=>$resultPage, 'background'=>$pageBackground,));
     }
         return $this->render('search/searchpage.html.twig', array(
             'form' => $form->createView()
@@ -122,10 +133,18 @@ class SearchController extends Controller
     
     public function requestMovies($page,$search,$isAdult){
         $arrayobj =  array();
+        /* this will be moved to seperate class in the future */
         $configResponse = Unirest\Request::get('https://api.themoviedb.org/3/configuration?api_key=75c283e81f306f2883b55e5ecb213cd8');
         $imageBaseUrl = $configResponse->body->images->base_url;
         $posterSize = $configResponse->body->images->poster_sizes[2];
+         $backdropSize=$configResponse->body->images->backdrop_sizes[2];
         $imagePrefix = $imageBaseUrl.$posterSize;
+        $backdropPrefix=$imageBaseUrl.$backdropSize;
+
+        $bgHelper = new BackgroundHelper();
+        $backdropPath=$bgHelper->getBackground();
+        $pageBackground=$backdropPrefix.$backdropPath;
+
         $headers = array('Accept' => 'application/json');
        
         $filterLanguage ='en-US';//default
@@ -136,15 +155,20 @@ class SearchController extends Controller
         $response = Unirest\Request::get('https://api.themoviedb.org/3/search/movie?api_key=75c283e81f306f2883b55e5ecb213cd8',$headers,$query);
         $totalItems= $response->body->total_results;
         $totalPages=$response->body->total_pages;
+
         $resp = new Response();
         $cookieItems = new Cookie('totalitems', $totalItems, time()+3600);
-        $cookieSearchQuery = new Cookie('search', urlencode($searchQuery), time()+3600);
+        $cookieSearchQuery = new Cookie('search', $searchQuery, time()+3600);
         $cookiePage = new Cookie('currentpage', $page, time()+3600);  
         $cookieTotalPages = new Cookie('totalpages', $totalPages, time()+3600);  
+        $cookieBackground = new Cookie('background',$pageBackground,time()+3600);
+       // $cookieTest=new Cookie('test','only set in requestmovie func',time()+3600);
         $resp->headers->setCookie($cookieItems);
         $resp->headers->setCookie($cookieSearchQuery);
         $resp->headers->setCookie($cookiePage);
         $resp->headers->setCookie($cookieTotalPages);
+        $resp->headers->setCookie($cookieBackground);
+       // $resp->headers->setCookie($cookieTest);
         $resp->send();
        
      foreach ($response->body->results as &$value) {
@@ -178,9 +202,10 @@ class SearchController extends Controller
        $totalItems = $request->cookies->get('totalitems');
        $totalPages = $request->cookies->get('totalpages');
        $arrayob=$this->requestMovies($pagenum,$search,false);
-
-        $paginator = $this->get('ashley_dawson_simple_pagination.paginator');
-          $paginator->setItemTotalCallback(function () use ($totalItems) {
+       $pageBackground = $request->cookies->get('background');
+       //$test = $request->cookies->get('test');
+       $paginator = $this->get('ashley_dawson_simple_pagination.paginator');
+       $paginator->setItemTotalCallback(function () use ($totalItems) {
             return $totalItems;
         });
         $paginator->setSliceCallback(function ($offset, $length) use ($arrayob) {
@@ -188,7 +213,7 @@ class SearchController extends Controller
         });
         $pagination = $paginator->paginate((int)$request->query->get('pagenum', $pagenum));
          return $this->render('search/searchresults.html.twig', array(
-            'movies'=>$arrayob,'pagination' => $pagination,'currentpage'=>$pagenum, 'totalpages'=>$totalPages, 'totalitems'=>$totalItems
+            'movies'=>$arrayob,'pagination' => $pagination,'currentpage'=>$pagenum, 'totalpages'=>$totalPages, 'totalitems'=>$totalItems, 'background'=>$pageBackground,
         ));
      }
  
