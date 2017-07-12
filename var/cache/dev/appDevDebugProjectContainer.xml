@@ -17,6 +17,7 @@
       <parameter key="DoctrineBundle">Doctrine\Bundle\DoctrineBundle\DoctrineBundle</parameter>
       <parameter key="SensioFrameworkExtraBundle">Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle</parameter>
       <parameter key="AppBundle">AppBundle\AppBundle</parameter>
+      <parameter key="AshleyDawsonSimplePaginationBundle">AshleyDawson\SimplePaginationBundle\AshleyDawsonSimplePaginationBundle</parameter>
       <parameter key="DebugBundle">Symfony\Bundle\DebugBundle\DebugBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
@@ -63,6 +64,11 @@
         <parameter key="parent">null</parameter>
         <parameter key="path">C:\php\netvlies_opdracht\src\AppBundle</parameter>
         <parameter key="namespace">AppBundle</parameter>
+      </parameter>
+      <parameter key="AshleyDawsonSimplePaginationBundle" type="collection">
+        <parameter key="parent">null</parameter>
+        <parameter key="path">C:\php\netvlies_opdracht\vendor\ashleydawson\simple-pagination-bundle\AshleyDawson\SimplePaginationBundle</parameter>
+        <parameter key="namespace">AshleyDawson\SimplePaginationBundle</parameter>
       </parameter>
       <parameter key="DebugBundle" type="collection">
         <parameter key="parent">null</parameter>
@@ -127,7 +133,7 @@
     <parameter key="validator.mapping.cache.prefix"></parameter>
     <parameter key="validator.mapping.cache.file">C:\php\netvlies_opdracht\var\cache\dev/validation.php</parameter>
     <parameter key="validator.translation_domain">validators</parameter>
-    <parameter key="profiler_listener.only_exceptions">false</parameter>
+    <parameter key="profiler_listener.only_exceptions">true</parameter>
     <parameter key="profiler_listener.only_master_requests">false</parameter>
     <parameter key="profiler.storage.dsn">file:C:\php\netvlies_opdracht\var\cache\dev/profiler</parameter>
     <parameter key="debug.error_handler.throw_at">-1</parameter>
@@ -333,6 +339,11 @@
     <parameter key="sensio_framework_extra.converter.doctrine.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter</parameter>
     <parameter key="sensio_framework_extra.converter.datetime.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DateTimeParamConverter</parameter>
     <parameter key="sensio_framework_extra.view.listener.class">Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener</parameter>
+    <parameter key="ashley_dawson_simple_pagination.defaults.items_per_page">10</parameter>
+    <parameter key="ashley_dawson_simple_pagination.defaults.pages_in_range">5</parameter>
+    <parameter key="ashley_dawson_simple_pagination.defaults.template">AshleyDawsonSimplePaginationBundle:Pagination:default.html.twig</parameter>
+    <parameter key="ashley_dawson_simple_pagination.paginator.class">AshleyDawson\SimplePagination\Paginator</parameter>
+    <parameter key="ashley_dawson_simple_pagination.twig_extension.class">AshleyDawson\SimplePaginationBundle\Twig\SimplePaginationExtension</parameter>
     <parameter key="web_profiler.debug_toolbar.position">bottom</parameter>
     <parameter key="web_profiler.debug_toolbar.intercept_redirects">false</parameter>
     <parameter key="web_profiler.debug_toolbar.mode">2</parameter>
@@ -417,9 +428,21 @@
     <service id="AppBundle\Controller\DefaultController" class="AppBundle\Controller\DefaultController" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
     </service>
+    <service id="AppBundle\Controller\DetailController" class="AppBundle\Controller\DetailController" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+    </service>
     <service id="AppBundle\Controller\LuckyController" class="AppBundle\Controller\LuckyController" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
     </service>
+    <service id="AppBundle\Controller\ResultController" class="AppBundle\Controller\ResultController" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+    </service>
+    <service id="AppBundle\Controller\SearchController" class="AppBundle\Controller\SearchController" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+    </service>
+    <service id="AppBundle\Helpers\BackgroundHelper" class="AppBundle\Helpers\BackgroundHelper" public="false" autowire="true" autoconfigure="true"/>
+    <service id="AppBundle\Helpers\ConfigurationAPIHelper" class="AppBundle\Helpers\ConfigurationAPIHelper" public="false" autowire="true" autoconfigure="true"/>
+    <service id="AppBundle\Helpers\SearchMovieHelper" class="AppBundle\Helpers\SearchMovieHelper" public="false" autowire="true" autoconfigure="true"/>
     <service id="controller_name_converter" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
       <tag name="monolog.logger" channel="request"/>
       <argument type="service" id="kernel"/>
@@ -436,7 +459,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id="service_locator.ebdaf59977bc26dc6a191d4f5f8254cb"/>
+      <argument type="service" id="service_locator.a523e362ae64f09d5512968a133c027f"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -605,7 +628,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>cXcwPObCO1NkO7OgYHzQSp</argument>
+      <argument>nf4zlxpWAYMmAWmpulS8im</argument>
       <argument>C:\php\netvlies_opdracht\var\cache\dev/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -615,7 +638,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>cXcwPObCO1NkO7OgYHzQSp</argument>
+      <argument>nf4zlxpWAYMmAWmpulS8im</argument>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
@@ -1125,7 +1148,7 @@
       <argument type="service" id="profiler"/>
       <argument type="service" id="request_stack"/>
       <argument>null</argument>
-      <argument>false</argument>
+      <argument>true</argument>
       <argument>false</argument>
     </service>
     <service id="data_collector.config" class="Symfony\Component\HttpKernel\DataCollector\ConfigDataCollector" public="false">
@@ -1372,6 +1395,14 @@
       </call>
       <call method="addListener">
         <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service" id="debug.debug_handlers_listener"/>
+          <argument>configure</argument>
+        </argument>
+        <argument>2048</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.command</argument>
         <argument type="collection">
           <argument type="service" id="debug.debug_handlers_listener"/>
           <argument>configure</argument>
@@ -2157,12 +2188,12 @@
     </service>
     <service id="security.authentication.listener.anonymous.main" class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
       <argument type="service" id="security.token_storage"/>
-      <argument>595e51fa9ba2e9.17094115</argument>
+      <argument>596638dd7280a5.99237481</argument>
       <argument type="service" id="monolog.logger.security" on-invalid="null"/>
       <argument type="service" id="security.authentication.manager"/>
     </service>
     <service id="security.authentication.provider.anonymous.main" class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-      <argument>595e51fa9ba2e9.17094115</argument>
+      <argument>596638dd7280a5.99237481</argument>
     </service>
     <service id="security.exception_listener.main" class="Symfony\Component\Security\Http\Firewall\ExceptionListener" public="false">
       <argument type="service" id="security.token_storage"/>
@@ -2270,6 +2301,9 @@
         <argument type="service" id="doctrine.twig.doctrine_extension"/>
       </call>
       <call method="addExtension">
+        <argument type="service" id="ashley_dawson_simple_pagination.twig_extension"/>
+      </call>
+      <call method="addExtension">
         <argument type="service" id="twig.extension.dump"/>
       </call>
       <call method="addExtension">
@@ -2338,6 +2372,10 @@
       <call method="addPath">
         <argument>C:\php\netvlies_opdracht\vendor\doctrine\doctrine-bundle/Resources/views</argument>
         <argument>Doctrine</argument>
+      </call>
+      <call method="addPath">
+        <argument>C:\php\netvlies_opdracht\vendor\ashleydawson\simple-pagination-bundle\AshleyDawson\SimplePaginationBundle/Resources/views</argument>
+        <argument>AshleyDawsonSimplePagination</argument>
       </call>
       <call method="addPath">
         <argument>C:\php\netvlies_opdracht\vendor\symfony\symfony\src\Symfony\Bundle\DebugBundle/Resources/views</argument>
@@ -2480,6 +2518,10 @@
       <call method="addPath">
         <argument>C:\php\netvlies_opdracht\vendor\doctrine\doctrine-bundle/Resources/views</argument>
         <argument>Doctrine</argument>
+      </call>
+      <call method="addPath">
+        <argument>C:\php\netvlies_opdracht\vendor\ashleydawson\simple-pagination-bundle\AshleyDawson\SimplePaginationBundle/Resources/views</argument>
+        <argument>AshleyDawsonSimplePagination</argument>
       </call>
       <call method="addPath">
         <argument>C:\php\netvlies_opdracht\vendor\symfony\symfony\src\Symfony\Bundle\DebugBundle/Resources/views</argument>
@@ -2809,7 +2851,9 @@
     <service id="doctrine.orm.quote_strategy.ansi" class="Doctrine\ORM\Mapping\AnsiQuoteStrategy" public="false"/>
     <service id="doctrine.orm.default_configuration" class="Doctrine\ORM\Configuration" public="false">
       <call method="setEntityNamespaces">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="AppBundle">AppBundle\Entity</argument>
+        </argument>
       </call>
       <call method="setMetadataCacheImpl">
         <argument type="service" id="doctrine_cache.providers.doctrine.orm.default_metadata_cache"/>
@@ -2848,7 +2892,18 @@
         <argument type="service" id="doctrine.orm.default_entity_listener_resolver"/>
       </call>
     </service>
-    <service id="doctrine.orm.default_metadata_driver" class="Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain" public="false"/>
+    <service id="doctrine.orm.default_annotation_metadata_driver" class="Doctrine\ORM\Mapping\Driver\AnnotationDriver" public="false">
+      <argument type="service" id="annotations.cached_reader"/>
+      <argument type="collection">
+        <argument>C:\php\netvlies_opdracht\src\AppBundle\Entity</argument>
+      </argument>
+    </service>
+    <service id="doctrine.orm.default_metadata_driver" class="Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain" public="false">
+      <call method="addDriver">
+        <argument type="service" id="doctrine.orm.default_annotation_metadata_driver"/>
+        <argument>AppBundle\Entity</argument>
+      </call>
+    </service>
     <service id="doctrine_cache.providers.doctrine.orm.default_metadata_cache" class="Doctrine\Common\Cache\ArrayCache">
       <call method="setNamespace">
         <argument>sf2orm_default_50e90f80307eb35b2fa4185649ee1f48a7adc00ede14ba9aee9c746473fb5673</argument>
@@ -2950,6 +3005,18 @@
       <argument type="service" id="security.authorization_checker" on-invalid="null"/>
     </service>
     <service id="sensio_framework_extra.security.expression_language.default" class="Sensio\Bundle\FrameworkExtraBundle\Security\ExpressionLanguage" public="false"/>
+    <service id="ashley_dawson_simple_pagination.paginator" class="AshleyDawson\SimplePagination\Paginator">
+      <call method="setItemsPerPage">
+        <argument>10</argument>
+      </call>
+      <call method="setPagesInRange">
+        <argument>5</argument>
+      </call>
+    </service>
+    <service id="ashley_dawson_simple_pagination.twig_extension" class="AshleyDawson\SimplePaginationBundle\Twig\SimplePaginationExtension">
+      <tag name="twig.extension"/>
+      <argument>AshleyDawsonSimplePaginationBundle:Pagination:default.html.twig</argument>
+    </service>
     <service id="twig.extension.dump" class="Symfony\Bridge\Twig\Extension\DumpExtension" public="false">
       <tag name="twig.extension"/>
       <argument type="service" id="var_dumper.cloner"/>
@@ -3127,13 +3194,31 @@
     </service>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.AppBundle\Controller\DefaultController" class="AppBundle\Controller\DefaultController" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.AppBundle\Controller\DefaultController" class="AppBundle\Controller\DefaultController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.AppBundle\Controller\DetailController" class="AppBundle\Controller\DetailController" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.AppBundle\Controller\DetailController" class="AppBundle\Controller\DetailController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.AppBundle\Controller\LuckyController" class="AppBundle\Controller\LuckyController" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.AppBundle\Controller\LuckyController" class="AppBundle\Controller\LuckyController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.AppBundle\Controller\ResultController" class="AppBundle\Controller\ResultController" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.AppBundle\Controller\ResultController" class="AppBundle\Controller\ResultController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.AppBundle\Controller\SearchController" class="AppBundle\Controller\SearchController" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.AppBundle\Controller\SearchController" class="AppBundle\Controller\SearchController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="service_locator.4f8384c8862c511eefe34301cff90111" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection"/>
     </service>
-    <service id="service_locator.ebdaf59977bc26dc6a191d4f5f8254cb" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.1908bd86f1b6c9e6db7ab64bc2d6db0f" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection"/>
+    </service>
+    <service id="service_locator.4b9dae093798bf04bd055750954b444a" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection"/>
+    </service>
+    <service id="service_locator.b0bf64971ab2f6bb34da001b1cb22477" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection"/>
+    </service>
+    <service id="service_locator.a523e362ae64f09d5512968a133c027f" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection"/>
     </service>
@@ -3349,7 +3434,7 @@
     <service id="cache.system.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false" lazy="true">
       <argument>hfvVyb1RUV</argument>
       <argument>0</argument>
-      <argument>cXcwPObCO1NkO7OgYHzQSp</argument>
+      <argument>nf4zlxpWAYMmAWmpulS8im</argument>
       <argument>C:\php\netvlies_opdracht\var\cache\dev/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -3357,7 +3442,7 @@
     <service id="cache.validator.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false" lazy="true">
       <argument>DnH6Zuune9</argument>
       <argument>0</argument>
-      <argument>cXcwPObCO1NkO7OgYHzQSp</argument>
+      <argument>nf4zlxpWAYMmAWmpulS8im</argument>
       <argument>C:\php\netvlies_opdracht\var\cache\dev/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -3365,7 +3450,7 @@
     <service id="cache.serializer.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false" lazy="true">
       <argument>6tF54aouy6</argument>
       <argument>0</argument>
-      <argument>cXcwPObCO1NkO7OgYHzQSp</argument>
+      <argument>nf4zlxpWAYMmAWmpulS8im</argument>
       <argument>C:\php\netvlies_opdracht\var\cache\dev/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -3373,7 +3458,7 @@
     <service id="cache.annotations.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false" lazy="true">
       <argument>ngW0Gj0uJC</argument>
       <argument>0</argument>
-      <argument>cXcwPObCO1NkO7OgYHzQSp</argument>
+      <argument>nf4zlxpWAYMmAWmpulS8im</argument>
       <argument>C:\php\netvlies_opdracht\var\cache\dev/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>

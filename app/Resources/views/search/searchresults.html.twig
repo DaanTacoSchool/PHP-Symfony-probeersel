@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="site-wrapper bgMovieResults"style="background-image:url('{{background}}'); 
+    ">
+    <div id="site-wrapper-inner-resultpage" >
+{% block body_menu %}
+    {{parent()}}
+{% endblock %}
+{% block body_results %}
+        <div class="paginationDiv-top">
+            <div class="paginationDiv-top-inner">
+       {% for page in pagination.pages %}
+       {% if page <= totalpages %}
+           <a href="{{ path('movie_results', {'page': page,'search': search}) }}" class="{% if currentpage == page %}activeLink{% endif %}">{{ page }}</a> |
+       {% endif %}
+       {% endfor %}
+       of <a href="{{ path('movie_results', {'page': totalpages,'search': search}) }}" class="lastPageLink">{{ totalpages }}</a>   
+            </div>
+    </div>
+    {% for movie in movies %}
+       
+        <div class="movieDiv-container">
+             <div class="movieDiv-image">
+                 {% if not (movie.PosterPath() ends with '.jpg') %}
+                 <p>No image found!</p>
+                 {% else %}
+            <img src="{{movie.PosterPath()}}" alt="#">
+                 {% endif %}
+            </div>
+            <div class="movieDiv-right-wrapper">
+                <div class="movieDiv-header">
+                    <h3>{{ movie.Title() }}</h3>
+                </div>       
+                <div class="movieDiv-info">
+                    <p>{{ movie.Overview()}}</p>
+                </div>
+                <div class="movieDiv-right-details">
+                <table class="smallDetailsTable">
+                    <tr><th>Release date</th><td>{{movie.ReleaseDate()}}</td><td></td></tr>
+                    <tr><th>Average score</th><td>{{movie.VoteAverage()}}</td><td></td></tr>
+                    <tr><th>Total votes</th><td>{{movie.VoteCount()}}</td><td></td></tr>
+                    <tr><th>Popularity rating</th><td>{{movie.Popularity()}}</td><td><a href="../../search/searchpage/details/{{movie.MovieId()}}">Details</a></td></tr>
+                    
+                </table>     
+                </div>
+            </div>
+       </div>
+       
+    {% endfor %}
+       <p>{{totalitems}} Movies found!</p> 
+   
+        
+   <div class="paginationDiv">
+       {% for page in pagination.pages %}
+       {% if page <= totalpages %}
+           <a href="{{ path('movie_results', {'page': page,'search': search}) }}" class="{% if currentpage == page %}activeLink{% endif %}">{{ page }}</a> |
+       {% endif %}
+       {% endfor %}
+       of <a href="{{ path('movie_results', {'page': totalpages,'search': search}) }}" class="lastPageLink">{{ totalpages }}</a>   
+    </div>
+{% endblock %}{# body_results #}
+    </div>
+</div>
+
+{% endblock %}{# body #}

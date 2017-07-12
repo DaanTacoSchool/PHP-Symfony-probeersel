@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="site-wrapper">
+    <div id="site-wrapper-inner-resultpage">
+
+{% block body_menu %}
+{{parent()}}
+{% endblock %}
+{% block body_text_content %}
+{% endblock %}
+{% block body_results %}
+ {% for cookie in cookies %}
+     <p>  {{cookie.Name()}}</p> 
+      <p>  {{cookie.Value()}}</p> 
+ {% endfor %}
+   
+{% endblock %}
+        </div>
+    </div>
+{% endblock %}

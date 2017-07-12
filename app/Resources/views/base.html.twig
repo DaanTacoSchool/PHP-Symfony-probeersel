@@ -14,20 +14,21 @@
     </head>
     <body>
         {% block body %}
+        
 		<div class="site-wrapper">
 
       <div class="site-wrapper-inner">
-
+          
         
 {% block body_menu %}
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">Movie assignment</h3>
+              <h3 class="masthead-brand"><a href="/" class="noDecoration">Movie assignment</a></h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li class="{% if app.request.attributes.get('_route') starts with 'homepage' %}active{% endif %}"><a href="../../">Home</a></li>
-                  <li class="{% if app.request.attributes.get('_route') starts with 'lucky' %}active{% endif %}"><a href="../../lucky/number">Lucky number</a></li>
-                  <li><a href="#">Contact</a></li>
+                  <li class="{% if app.request.attributes.get('_route') starts with 'homepage' %}active{% endif %}"><a href="/">Home</a></li>
+                  <li class="{% if app.request.attributes.get('_route') starts with 'lucky' %}active{% endif %}"><a href="/lucky/number">Lucky number</a></li>
+                  <li class="{% if app.request.attributes.get('_route') starts with 'search' %}active{% endif %}"><a href="/search/searchpage">Search</a></li>
                 </ul>
               </nav>
             </div>
@@ -38,7 +39,10 @@
           <div class="inner cover">
             <h1 class="cover-heading">{% block body_text_title %}{% endblock %}</h1>
             <p class="lead">{% block body_text_content %}{% endblock %}</p>
+              {% block body_content_other %}{% endblock %}
           </div>
+    {% block body_results %}
+    {% endblock %}
 {% endblock %}{# end of body_content block #}
 {% block body_footer %}
           <div class="mastfoot">
@@ -47,11 +51,12 @@
             </div>
           </div>
 {% endblock %}{# end of body_footer block #}
-        </div>
-
+        </div>{# cover container , contains body content and body footer, directly below body#}
+         
       </div>
 
     </div>
+       
 
 {% endblock %}{# end of body block #}
         {% block javascripts %}
@@ -62,6 +67,7 @@
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="../../dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>{% endblock %}
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+        {% endblock %}
     </body>
 </html>

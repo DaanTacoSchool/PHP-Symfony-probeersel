@@ -122,6 +122,32 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             return array (  '_controller' => 'AppBundle\\Controller\\DefaultController::indexAction',  '_route' => 'homepage',);
         }
 
+        if (0 === strpos($pathinfo, '/search/searchpage')) {
+            // details
+            if (0 === strpos($pathinfo, '/search/searchpage/details') && preg_match('#^/search/searchpage/details/(?P<id>\\d+)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'details')), array (  '_controller' => 'AppBundle\\Controller\\DetailController::indexAction',));
+            }
+
+            // searchpage
+            if ('/search/searchpage' === $pathinfo) {
+                return array (  '_controller' => 'AppBundle\\Controller\\SearchController::indexAction',  '_route' => 'searchpage',);
+            }
+
+        }
+
+        elseif (0 === strpos($pathinfo, '/search/searchresult')) {
+            // movie_results
+            if (preg_match('#^/search/searchresult/(?P<page>\\d+)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'movie_results')), array (  '_controller' => 'AppBundle\\Controller\\ResultController::indexAction',));
+            }
+
+            // search
+            if (preg_match('#^/search/searchresult(?:/(?P<page>[^/]++))?$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'search')), array (  '_controller' => 'AppBundle:Controller:ResultController',  'page' => 1,  'search' => 'searchquery',));
+            }
+
+        }
+
         // lucky_number
         if ('/lucky/number' === $pathinfo) {
             return array (  '_controller' => 'AppBundle\\Controller\\LuckyController::numberAction',  '_route' => 'lucky_number',);

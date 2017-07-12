@@ -1,0 +1,56 @@
+
+<div class="simple-pagination">
+
+    {% if pagination.firstPageNumber and pagination.firstPageNumber != pagination.currentPageNumber %}
+        <span class="page first active">
+            <a href="{{ path(routeName, queryParameters | merge({(pageParameterName): pagination.firstPageNumber})) }}">&laquo;</a>
+        </span>
+    {% else %}
+        <span class="page first">
+            &laquo;
+        </span>
+    {% endif %}
+
+    {% if pagination.previousPageNumber %}
+        <span class="page previous active">
+            <a href="{{ path(routeName, queryParameters | merge({(pageParameterName): pagination.previousPageNumber})) }}">&lsaquo;</a>
+        </span>
+    {% else %}
+        <span class="page previous">
+            &lsaquo;
+        </span>
+    {% endif %}
+
+    {% for page in pagination.pages %}
+        {% if page == pagination.currentPageNumber %}
+            <span class="page current">
+                {{ page }}
+            </span>
+        {% else %}
+            <span class="page">
+                <a href="{{ path(routeName, queryParameters | merge({(pageParameterName): page})) }}">{{ page }}</a>
+            </span>
+        {% endif %}
+    {% endfor %}
+
+    {% if pagination.nextPageNumber %}
+        <span class="page next active">
+            <a href="{{ path(routeName, queryParameters | merge({(pageParameterName): pagination.nextPageNumber})) }}">&rsaquo;</a>
+        </span>
+    {% else %}
+        <span class="page next">
+            &rsaquo;
+        </span>
+    {% endif %}
+
+    {% if pagination.lastPageNumber and pagination.lastPageNumber != pagination.currentPageNumber %}
+        <span class="page last active">
+            <a href="{{ path(routeName, queryParameters | merge({(pageParameterName): pagination.lastPageNumber})) }}">&raquo;</a>
+        </span>
+    {% else %}
+        <span class="page last">
+            &raquo;
+        </span>
+    {% endif %}
+
+</div>

@@ -15,7 +15,7 @@ class ComposerStaticInit253c735a91f0009939ab46dbb591aa79
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
         '32dcc8afd4335739640db7d200c1971d' => __DIR__ . '/..' . '/symfony/polyfill-apcu/bootstrap.php',
-        '719971e375036615a0685b6fb054583d' => __DIR__ . '/..' . '/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php',
+        '2c49625aefa820c85243e7e19cde74cc' => __DIR__ . '/..' . '/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -67,6 +67,7 @@ class ComposerStaticInit253c735a91f0009939ab46dbb591aa79
         array (
             'Doctrine\\Instantiator\\' => 22,
             'Doctrine\\Common\\Cache\\' => 22,
+            'Doctrine\\Common\\Annotations\\' => 28,
             'Doctrine\\Common\\' => 16,
             'Doctrine\\Bundle\\DoctrineCacheBundle\\' => 36,
             'Doctrine\\Bundle\\DoctrineBundle\\' => 31,
@@ -194,6 +195,10 @@ class ComposerStaticInit253c735a91f0009939ab46dbb591aa79
         array (
             0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
         ),
+        'Doctrine\\Common\\Annotations\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations',
+        ),
         'Doctrine\\Common\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/common/lib/Doctrine/Common',
@@ -217,6 +222,13 @@ class ComposerStaticInit253c735a91f0009939ab46dbb591aa79
     );
 
     public static $prefixesPsr0 = array (
+        'U' => 
+        array (
+            'Unirest\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/mashape/unirest-php/src',
+            ),
+        ),
         'T' => 
         array (
             'Twig_' => 
@@ -253,9 +265,16 @@ class ComposerStaticInit253c735a91f0009939ab46dbb591aa79
             array (
                 0 => __DIR__ . '/..' . '/doctrine/collections/lib',
             ),
-            'Doctrine\\Common\\Annotations\\' => 
+        ),
+        'A' => 
+        array (
+            'AshleyDawson\\SimplePagination\\' => 
             array (
-                0 => __DIR__ . '/..' . '/doctrine/annotations/lib',
+                0 => __DIR__ . '/..' . '/ashleydawson/simple-pagination/lib',
+            ),
+            'AshleyDawson\\SimplePaginationBundle' => 
+            array (
+                0 => __DIR__ . '/..' . '/ashleydawson/simple-pagination-bundle',
             ),
         ),
     );

@@ -35,13 +35,19 @@ class appDevDebugProjectContainer extends Container
         $this->services = array();
         $this->normalizedIds = array(
             'appbundle\\controller\\defaultcontroller' => 'AppBundle\\Controller\\DefaultController',
+            'appbundle\\controller\\detailcontroller' => 'AppBundle\\Controller\\DetailController',
             'appbundle\\controller\\luckycontroller' => 'AppBundle\\Controller\\LuckyController',
+            'appbundle\\controller\\resultcontroller' => 'AppBundle\\Controller\\ResultController',
+            'appbundle\\controller\\searchcontroller' => 'AppBundle\\Controller\\SearchController',
         );
         $this->methodMap = array(
             '1_4313d964d94020ae54d9241dba202d8f225bdd9a97514af89cede5ca285edad9' => 'get14313d964d94020ae54d9241dba202d8f225bdd9a97514af89cede5ca285edad9Service',
             '2_4313d964d94020ae54d9241dba202d8f225bdd9a97514af89cede5ca285edad9' => 'get24313d964d94020ae54d9241dba202d8f225bdd9a97514af89cede5ca285edad9Service',
             'AppBundle\\Controller\\DefaultController' => 'getAppBundle_Controller_DefaultControllerService',
+            'AppBundle\\Controller\\DetailController' => 'getAppBundle_Controller_DetailControllerService',
             'AppBundle\\Controller\\LuckyController' => 'getAppBundle_Controller_LuckyControllerService',
+            'AppBundle\\Controller\\ResultController' => 'getAppBundle_Controller_ResultControllerService',
+            'AppBundle\\Controller\\SearchController' => 'getAppBundle_Controller_SearchControllerService',
             'annotation_reader' => 'getAnnotationReaderService',
             'annotations.reader' => 'getAnnotations_ReaderService',
             'argument_resolver.default' => 'getArgumentResolver_DefaultService',
@@ -50,6 +56,8 @@ class appDevDebugProjectContainer extends Container
             'argument_resolver.service' => 'getArgumentResolver_ServiceService',
             'argument_resolver.session' => 'getArgumentResolver_SessionService',
             'argument_resolver.variadic' => 'getArgumentResolver_VariadicService',
+            'ashley_dawson_simple_pagination.paginator' => 'getAshleyDawsonSimplePagination_PaginatorService',
+            'ashley_dawson_simple_pagination.twig_extension' => 'getAshleyDawsonSimplePagination_TwigExtensionService',
             'assets.context' => 'getAssets_ContextService',
             'assets.packages' => 'getAssets_PackagesService',
             'cache.annotations' => 'getCache_AnnotationsService',
@@ -381,6 +389,21 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'AppBundle\Controller\DetailController' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * This service is autowired.
+     *
+     * @return \AppBundle\Controller\DetailController A AppBundle\Controller\DetailController instance
+     */
+    protected function getAppBundle_Controller_DetailControllerService()
+    {
+        return $this->services['AppBundle\Controller\DetailController'] = new \AppBundle\Controller\DetailController();
+    }
+
+    /**
      * Gets the 'AppBundle\Controller\LuckyController' service.
      *
      * This service is shared.
@@ -396,6 +419,36 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'AppBundle\Controller\ResultController' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * This service is autowired.
+     *
+     * @return \AppBundle\Controller\ResultController A AppBundle\Controller\ResultController instance
+     */
+    protected function getAppBundle_Controller_ResultControllerService()
+    {
+        return $this->services['AppBundle\Controller\ResultController'] = new \AppBundle\Controller\ResultController();
+    }
+
+    /**
+     * Gets the 'AppBundle\Controller\SearchController' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * This service is autowired.
+     *
+     * @return \AppBundle\Controller\SearchController A AppBundle\Controller\SearchController instance
+     */
+    protected function getAppBundle_Controller_SearchControllerService()
+    {
+        return $this->services['AppBundle\Controller\SearchController'] = new \AppBundle\Controller\SearchController();
+    }
+
+    /**
      * Gets the 'annotation_reader' service.
      *
      * This service is shared.
@@ -406,6 +459,37 @@ class appDevDebugProjectContainer extends Container
     protected function getAnnotationReaderService()
     {
         return $this->services['annotation_reader'] = new \Doctrine\Common\Annotations\CachedReader(${($_ = isset($this->services['annotations.reader']) ? $this->services['annotations.reader'] : $this->getAnnotations_ReaderService()) && false ?: '_'}, new \Symfony\Component\Cache\DoctrineProvider(\Symfony\Component\Cache\Adapter\PhpArrayAdapter::create((__DIR__.'/annotations.php'), ${($_ = isset($this->services['cache.annotations']) ? $this->services['cache.annotations'] : $this->getCache_AnnotationsService()) && false ?: '_'})), true);
+    }
+
+    /**
+     * Gets the 'ashley_dawson_simple_pagination.paginator' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \AshleyDawson\SimplePagination\Paginator A AshleyDawson\SimplePagination\Paginator instance
+     */
+    protected function getAshleyDawsonSimplePagination_PaginatorService()
+    {
+        $this->services['ashley_dawson_simple_pagination.paginator'] = $instance = new \AshleyDawson\SimplePagination\Paginator();
+
+        $instance->setItemsPerPage(10);
+        $instance->setPagesInRange(5);
+
+        return $instance;
+    }
+
+    /**
+     * Gets the 'ashley_dawson_simple_pagination.twig_extension' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \AshleyDawson\SimplePaginationBundle\Twig\SimplePaginationExtension A AshleyDawson\SimplePaginationBundle\Twig\SimplePaginationExtension instance
+     */
+    protected function getAshleyDawsonSimplePagination_TwigExtensionService()
+    {
+        return $this->services['ashley_dawson_simple_pagination.twig_extension'] = new \AshleyDawson\SimplePaginationBundle\Twig\SimplePaginationExtension('AshleyDawsonSimplePaginationBundle:Pagination:default.html.twig');
     }
 
     /**
@@ -791,6 +875,9 @@ class appDevDebugProjectContainer extends Container
         $instance->addListener('kernel.request', array(0 => function () {
             return ${($_ = isset($this->services['debug.debug_handlers_listener']) ? $this->services['debug.debug_handlers_listener'] : $this->get('debug.debug_handlers_listener')) && false ?: '_'};
         }, 1 => 'configure'), 2048);
+        $instance->addListener('console.command', array(0 => function () {
+            return ${($_ = isset($this->services['debug.debug_handlers_listener']) ? $this->services['debug.debug_handlers_listener'] : $this->get('debug.debug_handlers_listener')) && false ?: '_'};
+        }, 1 => 'configure'), 2048);
         $instance->addListener('kernel.request', array(0 => function () {
             return ${($_ = isset($this->services['router_listener']) ? $this->services['router_listener'] : $this->get('router_listener')) && false ?: '_'};
         }, 1 => 'onKernelRequest'), 32);
@@ -987,22 +1074,25 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getDoctrine_Orm_DefaultEntityManagerService($lazyLoad = true)
     {
-        $a = new \Doctrine\ORM\Configuration();
-        $a->setEntityNamespaces(array());
-        $a->setMetadataCacheImpl(${($_ = isset($this->services['doctrine_cache.providers.doctrine.orm.default_metadata_cache']) ? $this->services['doctrine_cache.providers.doctrine.orm.default_metadata_cache'] : $this->get('doctrine_cache.providers.doctrine.orm.default_metadata_cache')) && false ?: '_'});
-        $a->setQueryCacheImpl(${($_ = isset($this->services['doctrine_cache.providers.doctrine.orm.default_query_cache']) ? $this->services['doctrine_cache.providers.doctrine.orm.default_query_cache'] : $this->get('doctrine_cache.providers.doctrine.orm.default_query_cache')) && false ?: '_'});
-        $a->setResultCacheImpl(${($_ = isset($this->services['doctrine_cache.providers.doctrine.orm.default_result_cache']) ? $this->services['doctrine_cache.providers.doctrine.orm.default_result_cache'] : $this->get('doctrine_cache.providers.doctrine.orm.default_result_cache')) && false ?: '_'});
-        $a->setMetadataDriverImpl(new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain());
-        $a->setProxyDir((__DIR__.'/doctrine/orm/Proxies'));
-        $a->setProxyNamespace('Proxies');
-        $a->setAutoGenerateProxyClasses(true);
-        $a->setClassMetadataFactoryName('Doctrine\\ORM\\Mapping\\ClassMetadataFactory');
-        $a->setDefaultRepositoryClassName('Doctrine\\ORM\\EntityRepository');
-        $a->setNamingStrategy(new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy());
-        $a->setQuoteStrategy(new \Doctrine\ORM\Mapping\DefaultQuoteStrategy());
-        $a->setEntityListenerResolver(${($_ = isset($this->services['doctrine.orm.default_entity_listener_resolver']) ? $this->services['doctrine.orm.default_entity_listener_resolver'] : $this->get('doctrine.orm.default_entity_listener_resolver')) && false ?: '_'});
+        $a = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain();
+        $a->addDriver(new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(${($_ = isset($this->services['annotation_reader']) ? $this->services['annotation_reader'] : $this->get('annotation_reader')) && false ?: '_'}, array(0 => ($this->targetDirs[3].'\\src\\AppBundle\\Entity'))), 'AppBundle\\Entity');
 
-        $this->services['doctrine.orm.default_entity_manager'] = $instance = \Doctrine\ORM\EntityManager::create(${($_ = isset($this->services['doctrine.dbal.default_connection']) ? $this->services['doctrine.dbal.default_connection'] : $this->get('doctrine.dbal.default_connection')) && false ?: '_'}, $a);
+        $b = new \Doctrine\ORM\Configuration();
+        $b->setEntityNamespaces(array('AppBundle' => 'AppBundle\\Entity'));
+        $b->setMetadataCacheImpl(${($_ = isset($this->services['doctrine_cache.providers.doctrine.orm.default_metadata_cache']) ? $this->services['doctrine_cache.providers.doctrine.orm.default_metadata_cache'] : $this->get('doctrine_cache.providers.doctrine.orm.default_metadata_cache')) && false ?: '_'});
+        $b->setQueryCacheImpl(${($_ = isset($this->services['doctrine_cache.providers.doctrine.orm.default_query_cache']) ? $this->services['doctrine_cache.providers.doctrine.orm.default_query_cache'] : $this->get('doctrine_cache.providers.doctrine.orm.default_query_cache')) && false ?: '_'});
+        $b->setResultCacheImpl(${($_ = isset($this->services['doctrine_cache.providers.doctrine.orm.default_result_cache']) ? $this->services['doctrine_cache.providers.doctrine.orm.default_result_cache'] : $this->get('doctrine_cache.providers.doctrine.orm.default_result_cache')) && false ?: '_'});
+        $b->setMetadataDriverImpl($a);
+        $b->setProxyDir((__DIR__.'/doctrine/orm/Proxies'));
+        $b->setProxyNamespace('Proxies');
+        $b->setAutoGenerateProxyClasses(true);
+        $b->setClassMetadataFactoryName('Doctrine\\ORM\\Mapping\\ClassMetadataFactory');
+        $b->setDefaultRepositoryClassName('Doctrine\\ORM\\EntityRepository');
+        $b->setNamingStrategy(new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy());
+        $b->setQuoteStrategy(new \Doctrine\ORM\Mapping\DefaultQuoteStrategy());
+        $b->setEntityListenerResolver(${($_ = isset($this->services['doctrine.orm.default_entity_listener_resolver']) ? $this->services['doctrine.orm.default_entity_listener_resolver'] : $this->get('doctrine.orm.default_entity_listener_resolver')) && false ?: '_'});
+
+        $this->services['doctrine.orm.default_entity_manager'] = $instance = \Doctrine\ORM\EntityManager::create(${($_ = isset($this->services['doctrine.dbal.default_connection']) ? $this->services['doctrine.dbal.default_connection'] : $this->get('doctrine.dbal.default_connection')) && false ?: '_'}, $b);
 
         ${($_ = isset($this->services['doctrine.orm.default_manager_configurator']) ? $this->services['doctrine.orm.default_manager_configurator'] : $this->get('doctrine.orm.default_manager_configurator')) && false ?: '_'}->configure($instance);
 
@@ -2220,7 +2310,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getProfilerListenerService()
     {
-        return $this->services['profiler_listener'] = new \Symfony\Component\HttpKernel\EventListener\ProfilerListener(${($_ = isset($this->services['profiler']) ? $this->services['profiler'] : $this->get('profiler')) && false ?: '_'}, ${($_ = isset($this->services['request_stack']) ? $this->services['request_stack'] : $this->get('request_stack')) && false ?: '_'}, NULL, false, false);
+        return $this->services['profiler_listener'] = new \Symfony\Component\HttpKernel\EventListener\ProfilerListener(${($_ = isset($this->services['profiler']) ? $this->services['profiler'] : $this->get('profiler')) && false ?: '_'}, ${($_ = isset($this->services['request_stack']) ? $this->services['request_stack'] : $this->get('request_stack')) && false ?: '_'}, NULL, true, false);
     }
 
     /**
@@ -2430,7 +2520,7 @@ class appDevDebugProjectContainer extends Container
 
         $f = new \Symfony\Component\Security\Http\AccessMap();
 
-        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($f, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => new \Symfony\Component\Security\Core\User\InMemoryUserProvider()), 'main', $a, ${($_ = isset($this->services['debug.event_dispatcher']) ? $this->services['debug.event_dispatcher'] : $this->get('debug.event_dispatcher', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'}, $c), 2 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '595e51fa9ba2e9.17094115', $a, $d), 3 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, ${($_ = isset($this->services['debug.security.access.decision_manager']) ? $this->services['debug.security.access.decision_manager'] : $this->getDebug_Security_Access_DecisionManagerService()) && false ?: '_'}, $f, $d)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $c, new \Symfony\Component\Security\Http\HttpUtils($e, $e), 'main', NULL, NULL, NULL, $a, false), new \Symfony\Bundle\SecurityBundle\Security\FirewallConfig('main', 'security.user_checker', NULL, true, false, 'security.user.provider.concrete.in_memory', 'main', NULL, NULL, NULL, array(0 => 'anonymous')));
+        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($f, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => new \Symfony\Component\Security\Core\User\InMemoryUserProvider()), 'main', $a, ${($_ = isset($this->services['debug.event_dispatcher']) ? $this->services['debug.event_dispatcher'] : $this->get('debug.event_dispatcher', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'}, $c), 2 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '596638dd7280a5.99237481', $a, $d), 3 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, ${($_ = isset($this->services['debug.security.access.decision_manager']) ? $this->services['debug.security.access.decision_manager'] : $this->getDebug_Security_Access_DecisionManagerService()) && false ?: '_'}, $f, $d)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $c, new \Symfony\Component\Security\Http\HttpUtils($e, $e), 'main', NULL, NULL, NULL, $a, false), new \Symfony\Bundle\SecurityBundle\Security\FirewallConfig('main', 'security.user_checker', NULL, true, false, 'security.user.provider.concrete.in_memory', 'main', NULL, NULL, NULL, array(0 => 'anonymous')));
     }
 
     /**
@@ -2974,6 +3064,7 @@ class appDevDebugProjectContainer extends Container
         $instance->addExtension(new \Symfony\Bridge\Twig\Extension\FormExtension(array(0 => $this, 1 => 'twig.form.renderer')));
         $instance->addExtension(new \Symfony\Bridge\Twig\Extension\WebLinkExtension($c));
         $instance->addExtension(new \Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension());
+        $instance->addExtension(${($_ = isset($this->services['ashley_dawson_simple_pagination.twig_extension']) ? $this->services['ashley_dawson_simple_pagination.twig_extension'] : $this->get('ashley_dawson_simple_pagination.twig_extension')) && false ?: '_'});
         $instance->addExtension(new \Symfony\Bridge\Twig\Extension\DumpExtension(${($_ = isset($this->services['var_dumper.cloner']) ? $this->services['var_dumper.cloner'] : $this->get('var_dumper.cloner')) && false ?: '_'}, $d));
         $instance->addExtension(new \Symfony\Bundle\WebProfilerBundle\Twig\WebProfilerExtension($e));
         $instance->addGlobal('app', $f);
@@ -3056,6 +3147,7 @@ class appDevDebugProjectContainer extends Container
         $instance->addPath(($this->targetDirs[3].'\\vendor\\symfony\\symfony\\src\\Symfony\\Bundle\\TwigBundle/Resources/views'), 'Twig');
         $instance->addPath(($this->targetDirs[3].'\\vendor\\symfony\\swiftmailer-bundle/Resources/views'), 'Swiftmailer');
         $instance->addPath(($this->targetDirs[3].'\\vendor\\doctrine\\doctrine-bundle/Resources/views'), 'Doctrine');
+        $instance->addPath(($this->targetDirs[3].'\\vendor\\ashleydawson\\simple-pagination-bundle\\AshleyDawson\\SimplePaginationBundle/Resources/views'), 'AshleyDawsonSimplePagination');
         $instance->addPath(($this->targetDirs[3].'\\vendor\\symfony\\symfony\\src\\Symfony\\Bundle\\DebugBundle/Resources/views'), 'Debug');
         $instance->addPath(($this->targetDirs[3].'\\vendor\\symfony\\symfony\\src\\Symfony\\Bundle\\WebProfilerBundle/Resources/views'), 'WebProfiler');
         $instance->addPath(($this->targetDirs[3].'\\app/Resources/views'));
@@ -3481,7 +3573,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getCache_Annotations_RecorderInnerService($lazyLoad = true)
     {
-        return $this->services['cache.annotations.recorder_inner'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('ngW0Gj0uJC', 0, 'cXcwPObCO1NkO7OgYHzQSp', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
+        return $this->services['cache.annotations.recorder_inner'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('ngW0Gj0uJC', 0, 'nf4zlxpWAYMmAWmpulS8im', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
     }
 
     /**
@@ -3525,7 +3617,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getCache_Serializer_RecorderInnerService($lazyLoad = true)
     {
-        return $this->services['cache.serializer.recorder_inner'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('6tF54aouy6', 0, 'cXcwPObCO1NkO7OgYHzQSp', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
+        return $this->services['cache.serializer.recorder_inner'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('6tF54aouy6', 0, 'nf4zlxpWAYMmAWmpulS8im', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
     }
 
     /**
@@ -3544,7 +3636,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getCache_System_RecorderInnerService($lazyLoad = true)
     {
-        return $this->services['cache.system.recorder_inner'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('hfvVyb1RUV', 0, 'cXcwPObCO1NkO7OgYHzQSp', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
+        return $this->services['cache.system.recorder_inner'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('hfvVyb1RUV', 0, 'nf4zlxpWAYMmAWmpulS8im', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
     }
 
     /**
@@ -3580,7 +3672,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getCache_Validator_RecorderInnerService($lazyLoad = true)
     {
-        return $this->services['cache.validator.recorder_inner'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('DnH6Zuune9', 0, 'cXcwPObCO1NkO7OgYHzQSp', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
+        return $this->services['cache.validator.recorder_inner'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('DnH6Zuune9', 0, 'nf4zlxpWAYMmAWmpulS8im', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
     }
 
     /**
@@ -3998,7 +4090,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_Authentication_Provider_Anonymous_MainService()
     {
-        return $this->services['security.authentication.provider.anonymous.main'] = new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('595e51fa9ba2e9.17094115');
+        return $this->services['security.authentication.provider.anonymous.main'] = new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('596638dd7280a5.99237481');
     }
 
     /**
@@ -4320,6 +4412,11 @@ class appDevDebugProjectContainer extends Container
                     'path' => ($this->targetDirs[3].'\\src\\AppBundle'),
                     'namespace' => 'AppBundle',
                 ),
+                'AshleyDawsonSimplePaginationBundle' => array(
+                    'parent' => NULL,
+                    'path' => ($this->targetDirs[3].'\\vendor\\ashleydawson\\simple-pagination-bundle\\AshleyDawson\\SimplePaginationBundle'),
+                    'namespace' => 'AshleyDawson\\SimplePaginationBundle',
+                ),
                 'DebugBundle' => array(
                     'parent' => NULL,
                     'path' => ($this->targetDirs[3].'\\vendor\\symfony\\symfony\\src\\Symfony\\Bundle\\DebugBundle'),
@@ -4376,6 +4473,7 @@ class appDevDebugProjectContainer extends Container
                 'DoctrineBundle' => 'Doctrine\\Bundle\\DoctrineBundle\\DoctrineBundle',
                 'SensioFrameworkExtraBundle' => 'Sensio\\Bundle\\FrameworkExtraBundle\\SensioFrameworkExtraBundle',
                 'AppBundle' => 'AppBundle\\AppBundle',
+                'AshleyDawsonSimplePaginationBundle' => 'AshleyDawson\\SimplePaginationBundle\\AshleyDawsonSimplePaginationBundle',
                 'DebugBundle' => 'Symfony\\Bundle\\DebugBundle\\DebugBundle',
                 'WebProfilerBundle' => 'Symfony\\Bundle\\WebProfilerBundle\\WebProfilerBundle',
                 'SensioDistributionBundle' => 'Sensio\\Bundle\\DistributionBundle\\SensioDistributionBundle',
@@ -4420,7 +4518,7 @@ class appDevDebugProjectContainer extends Container
             'validator.mapping.cache.prefix' => '',
             'validator.mapping.cache.file' => (__DIR__.'/validation.php'),
             'validator.translation_domain' => 'validators',
-            'profiler_listener.only_exceptions' => false,
+            'profiler_listener.only_exceptions' => true,
             'profiler_listener.only_master_requests' => false,
             'profiler.storage.dsn' => ('file:'.__DIR__.'/profiler'),
             'debug.error_handler.throw_at' => -1,
@@ -4631,6 +4729,11 @@ class appDevDebugProjectContainer extends Container
             'sensio_framework_extra.converter.doctrine.class' => 'Sensio\\Bundle\\FrameworkExtraBundle\\Request\\ParamConverter\\DoctrineParamConverter',
             'sensio_framework_extra.converter.datetime.class' => 'Sensio\\Bundle\\FrameworkExtraBundle\\Request\\ParamConverter\\DateTimeParamConverter',
             'sensio_framework_extra.view.listener.class' => 'Sensio\\Bundle\\FrameworkExtraBundle\\EventListener\\TemplateListener',
+            'ashley_dawson_simple_pagination.defaults.items_per_page' => 10,
+            'ashley_dawson_simple_pagination.defaults.pages_in_range' => 5,
+            'ashley_dawson_simple_pagination.defaults.template' => 'AshleyDawsonSimplePaginationBundle:Pagination:default.html.twig',
+            'ashley_dawson_simple_pagination.paginator.class' => 'AshleyDawson\\SimplePagination\\Paginator',
+            'ashley_dawson_simple_pagination.twig_extension.class' => 'AshleyDawson\\SimplePaginationBundle\\Twig\\SimplePaginationExtension',
             'web_profiler.debug_toolbar.position' => 'bottom',
             'web_profiler.debug_toolbar.intercept_redirects' => false,
             'web_profiler.debug_toolbar.mode' => 2,
