@@ -133,9 +133,17 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 return array (  '_controller' => 'AppBundle\\Controller\\SearchController::indexAction',  '_route' => 'searchpage',);
             }
 
-            // tmp
-            if (preg_match('#^/search/searchpage/(?P<pagenum>\\d+)$#s', $pathinfo, $matches)) {
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'tmp')), array (  '_controller' => 'AppBundle\\Controller\\SearchController::showPage',));
+        }
+
+        elseif (0 === strpos($pathinfo, '/search/searchresult')) {
+            // movie_results
+            if (preg_match('#^/search/searchresult/(?P<page>\\d+)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'movie_results')), array (  '_controller' => 'AppBundle\\Controller\\ResultController::indexAction',));
+            }
+
+            // search
+            if (preg_match('#^/search/searchresult(?:/(?P<page>[^/]++))?$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'search')), array (  '_controller' => 'AppBundle:Controller:ResultController',  'page' => 1,  'search' => 'searchquery',));
             }
 
         }

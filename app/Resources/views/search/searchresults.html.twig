@@ -8,12 +8,14 @@
 {% endblock %}
 {% block body_results %}
         <div class="paginationDiv-top">
+            <div class="paginationDiv-top-inner">
        {% for page in pagination.pages %}
        {% if page <= totalpages %}
-           <a href="/search/searchpage/{{page}}"  class="{% if currentpage == page %}activeLink{% endif %}">{{ page }}</a> |
+           <a href="{{ path('movie_results', {'page': page,'search': search}) }}" class="{% if currentpage == page %}activeLink{% endif %}">{{ page }}</a> |
        {% endif %}
        {% endfor %}
-       of <a href="/search/searchpage/{{totalpages}}" class="lastPageLink">{{ totalpages }}</a>   
+       of <a href="{{ path('movie_results', {'page': totalpages,'search': search}) }}" class="lastPageLink">{{ totalpages }}</a>   
+            </div>
     </div>
     {% for movie in movies %}
        
@@ -51,10 +53,10 @@
    <div class="paginationDiv">
        {% for page in pagination.pages %}
        {% if page <= totalpages %}
-           <a href="/search/searchpage/{{page}}"  class="{% if currentpage == page %}activeLink{% endif %}">{{ page }}</a> |
+           <a href="{{ path('movie_results', {'page': page,'search': search}) }}" class="{% if currentpage == page %}activeLink{% endif %}">{{ page }}</a> |
        {% endif %}
        {% endfor %}
-       of <a href="/search/searchpage/{{totalpages}}" class="lastPageLink">{{ totalpages }}</a>   
+       of <a href="{{ path('movie_results', {'page': totalpages,'search': search}) }}" class="lastPageLink">{{ totalpages }}</a>   
     </div>
 {% endblock %}{# body_results #}
     </div>

@@ -252,8 +252,15 @@ body {
     padding-bottom: 2%;
 }
 .paginationDiv-top{
-   
     margin-top: -4%;
+    padding-bottom: 10px;
+    overflow: hidden;
+}
+.paginationDiv-top-inner{
+    background-color: rgba(50, 44, 44, 0.48);
+    overflow: hidden;
+    margin-left: 40%;
+    margin-right: 40%;
 }
 
 .activeLink:active,
